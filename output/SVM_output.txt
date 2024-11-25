@@ -1,0 +1,8 @@
+model:  SVM
+accuray score:  0.9409005334170066
+disparate impact ratio regarding sex:  1.0050535771338691
+disparate impact ratio regarding race:  0.7704108934266081
+average odds error:  0.018941561054588885
+accuracy after applying reweighting 0.9405083150298086
+disparate impact ratio regarding race after reweighting:  0.854326542066064
+average odds error regarding race  and sex after reweighting:  0.020172867131357297

@@ -1,0 +1,8 @@
+model:  Logistic Regression
+accuray score:  0.9409475996234703
+disparate impact ratio regarding sex:  1.0041453807415288
+disparate impact ratio regarding race:  0.7711493871894176
+average odds error:  0.019038514205857837
+accuracy after applying reweighting 0.9400062754941951
+disparate impact ratio regarding race after reweighting:  0.8492492864186915
+average odds error regarding race  and sex after reweighting:  0.01607931401254714

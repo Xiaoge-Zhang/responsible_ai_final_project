@@ -1,6 +1,6 @@
 # how to set up the envrionment
 to be able to run the programs, you need to use the following command to install the packages used:
-pip install numpy, pandas, scikit-learn, sodapy
+pip install numpy, pandas, scikit-learn, sodapy, aif360
 
 # responsible_ai_final_project
 For this project, I am going to test different ML models and their fairness on the fatality prediction for the COVID-19 virus infection
@@ -16,7 +16,7 @@ The tools I used are mainly the Scikit-learn library for some ready-to-use ML mo
 there are no parameters at this time
 running data_gathering.py will gather the data from CDC dataset with tuned query
 running data_preprocessing will create datasets by race of the patients
-running SVM.py will output the result csv in the output folder that shows the difference in performances on patients data of different races
+running Logi{{model name}.py will use the corresponding model to predict given the data, using sex and race as protected attributes. it will output the accuracy of the model on unmitigated data, output disparate impact ratio on sex and race, the average odds error on both attributes, and mitigate the bias if there's by feature reweighting. It will also output the mitigated performance as well as disparate impact ratio and average odds error.
 
 # Future work
 apparently right now the project isn't finished, I will have bigger datasets and test more ML models by the deadlines

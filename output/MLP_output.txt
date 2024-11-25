@@ -1,0 +1,5 @@
+model:  MLP
+accuray score:  0.944916849701914
+disparate impact ratio regarding sex:  1.0001652086036337
+disparate impact ratio regarding race:  0.7804582347382965
+average odds error:  0.013767035643830527

@@ -9,64 +9,45 @@ socrata_dataset_identifier = "n8mc-b4w4"
 MyAppToken = "SQV4rZQAtpCh6MWLy2zXrZhsE"
 username = "gezi12zai@gmail.com"
 password = "Gezi12zao@Gezi12zai"
-timeout_seconds = 120
+timeout_seconds = 600
 # Example authenticated client (needed for non-public datasets):
 client = Socrata("data.cdc.gov", MyAppToken, username=username, password=password, timeout=timeout_seconds)
+sample_number = 20000
+races = ['White', 'Black', 'Asian']
+labels = ['Yes', 'No']
+Sexs= ['Male', 'Female']
 
-query_negative = """
-select 
-    case_month, 
-    res_state,
-    age_group,
-    sex,
-    race,
-    process,
-    exposure_yn,
-    symptom_status,
-    hosp_yn,
-    icu_yn,
-    underlying_conditions_yn,
-    death_yn
-where
-    sex in('Female', 'MALE', 'Other')
-    and race in('American Indian/Alaska Native', 'Asian', 'Black', 'Multiple/Other', 'Native Hawaiian/Other Pacific Islander', 'White')
-    and death_yn in('No')
-limit
-    100000
-"""
+result = []
+for race in races:
+    for label in labels:
+        for sex in Sexs:
+            query = """
+            select 
+                age_group,
+                sex,
+                race,
+                process,
+                exposure_yn,
+                symptom_status,
+                hosp_yn,
+                icu_yn,
+                underlying_conditions_yn,
+                death_yn
+            where
+                sex in('{}')
+                and race in('{}')
+                and death_yn in('{}')
+            limit
+                {}
+            """.format(sex, race, label, sample_number)
 
-query_positive = """
-select 
-    case_month, 
-    res_state,
-    age_group,
-    sex,
-    race,
-    process,
-    exposure_yn,
-    symptom_status,
-    hosp_yn,
-    icu_yn,
-    underlying_conditions_yn,
-    death_yn
-where
-    sex in('Female', 'MALE', 'Other')
-    and race in('American Indian/Alaska Native', 'Asian', 'Black', 'Multiple/Other', 'Native Hawaiian/Other Pacific Islander', 'White')
-    and death_yn in('Yes')
-limit
-    100000
-"""
+            result += client.get(socrata_dataset_identifier, query=query)
+            print("finish {}_{}_{} query".format(race, sex, label))
+
 # New column order
 
-new_order = ['case_month', 'res_state', 'age_group', 'sex', 'race', 'process', 'exposure_yn', 'symptom_status',
+new_order = ['race', 'sex', 'age_group', 'process', 'exposure_yn', 'symptom_status',
              'hosp_yn', 'icu_yn', 'underlying_conditions_yn', 'death_yn']
-
-results_negative = client.get(socrata_dataset_identifier, query=query_negative)
-print('negative finished')
-results_positive = client.get(socrata_dataset_identifier, query=query_positive)
-print('positive finished')
-
-result = results_negative + results_positive
 
 results_df = pd.DataFrame.from_records(result)
 
@@ -76,16 +57,8 @@ results_df = results_df[new_order]
 # fill missing values
 results_df['underlying_conditions_yn'] = results_df['underlying_conditions_yn'].fillna('Unknown')
 
-# convert the label values
-results_df['death_yn'] = results_df['death_yn'].replace({'No': 0, 'Yes': 1})
-# convert string attributes to numerical values
-converted_parts = ['case_month', 'res_state', 'age_group', 'sex', 'process', 'exposure_yn', 'symptom_status',
-             'hosp_yn', 'icu_yn', 'underlying_conditions_yn', 'death_yn']
-results_df[converted_parts] = results_df[converted_parts].apply(LabelEncoder().fit_transform)
-results_df['race'] = results_df['race'].replace({
-    'American Indian/Alaska Native': 'American_Indian_Alaska_Native',
-    'Multiple/Other': 'Multiple_Other'
-})
+# Set 'race' and 'sex' as the MultiIndex
+results_df = results_df.set_index(['race', 'sex'])
 
 # save the data
-results_df.to_csv('../data/cdc_data.csv', index=False)
+results_df.to_csv('../data/cdc_data.csv')
