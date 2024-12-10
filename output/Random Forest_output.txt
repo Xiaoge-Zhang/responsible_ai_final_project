@@ -1,8 +1,0 @@
-model:  Random Forest
-accuray score:  0.9456699090053342
-disparate impact ratio regarding sex:  0.9978270530735248
-disparate impact ratio regarding race:  0.7828776077304227
-average odds error:  0.014355658535264382
-accuracy after applying reweighting 0.9457326639472858
-disparate impact ratio regarding race after reweighting:  0.8383023671909173
-average odds error regarding race  and sex after reweighting:  0.013792720900685063

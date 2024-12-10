@@ -1,8 +1,0 @@
-model:  Naive Bayes
-accuray score:  0.9393316598682147
-disparate impact ratio regarding sex:  1.0035222024421766
-disparate impact ratio regarding race:  0.7808658923195962
-average odds error:  0.015751442373143576
-accuracy after applying reweighting 0.9389708189519924
-disparate impact ratio regarding race after reweighting:  0.8398790772030655
-average odds error regarding race  and sex after reweighting:  0.014229312742856659
